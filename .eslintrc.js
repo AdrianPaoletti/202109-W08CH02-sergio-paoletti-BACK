@@ -3,10 +3,9 @@ module.exports = {
     commonjs: true,
     es2021: true,
     node: true,
+    jest: true,
   },
-  extends: [
-    'airbnb-base', 'prettier',
-  ],
+  extends: ["airbnb-base", "prettier"],
   parserOptions: {
     ecmaVersion: 13,
   },
@@ -16,6 +15,6 @@ module.exports = {
     "no-restricted-syntax": "off",
     "consistent-return": "off",
     "no-debugger": "off",
-    "no-console": "off"
+    "no-console": "off",
   },
 };
