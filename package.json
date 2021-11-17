@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start dev": "nodemon -q .",
+    "start": "node index",
+    "test": "jest --watchAll --collect-coverage"
   },
   "author": "",
   "license": "ISC",
