@@ -9,6 +9,8 @@ const {
   finalErrorHandler,
 } = require("./middlewares/error");
 
+const tuitahRoutes = require("./routes/tuitahRoutes");
+
 const app = express();
 
 const initializeServer = (port) =>
@@ -48,6 +50,8 @@ app.use(morgan("dev"));
 app.use(cors()); // <---- use cors middleware
 
 app.use(express.json());
+
+app.use("/tuitah", tuitahRoutes);
 
 app.use(noEncontradoHandler);
 app.use(finalErrorHandler);
