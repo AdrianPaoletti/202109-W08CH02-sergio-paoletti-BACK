@@ -1,5 +1,10 @@
 const Tuitah = require("../../database/models/tuitah");
-const { getTuitah, addTuitah, likeTuitah } = require("./tuitahController");
+const {
+  getTuitah,
+  addTuitah,
+  likeTuitah,
+  deleteTuitah,
+} = require("./tuitahController");
 
 jest.mock("../../database/models/tuitah");
 
@@ -98,11 +103,18 @@ describe("Given a addTuitah function", () => {
         code: 400,
         message: "Datos erroneos!",
       };
+
+      const req = {
+        body: {
+          text: "que pazaa pishasssss",
+        },
+      };
+
       Tuitah.create = jest.fn().mockRejectedValue({});
 
       const next = jest.fn();
 
-      await getTuitah(null, null, next);
+      await addTuitah(req, null, next);
 
       expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
       expect(next.mock.calls[0][0]).toHaveProperty(
@@ -150,6 +162,82 @@ describe("Given a likeTuitah function", () => {
       await likeTuitah(req, res, null);
 
       expect(res.json).toHaveBeenCalledWith(tuitLiked);
+    });
+  });
+  describe("When it is wrong request", () => {
+    test("Then it should invoke next() function with error 400 and message Datos erroneos!", async () => {
+      const expectedError = {
+        code: 400,
+        message: "Datos erroneos!",
+      };
+
+      const req = {
+        body: {
+          id: "61954cb7c24554beef209bc0",
+        },
+      };
+
+      Tuitah.findById = jest.fn().mockRejectedValue({});
+
+      const next = jest.fn();
+
+      await likeTuitah(req, null, next);
+
+      expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        expectedError.message
+      );
+    });
+  });
+});
+
+describe("Given a deleteTuitah function", () => {
+  describe("When it is call with a id Tuit ", () => {
+    test("Then it should invoke res.json() function with Borrado Correctamente!", async () => {
+      const req = {
+        body: {
+          id: "61954cb7c24554beef209bc0",
+        },
+      };
+
+      const respons = { tuit: "Borrado Correctamente!" };
+
+      const res = {
+        json: jest.fn(),
+      };
+
+      Tuitah.deleteOne = jest.fn().mockResolvedValue(respons);
+
+      await deleteTuitah(req, res, null);
+
+      expect(res.json).toHaveBeenCalledWith(respons);
+    });
+  });
+  describe("When it is wrong request", () => {
+    test("Then it should invoke next() function with error 400 and message Datos erroneos!", async () => {
+      const expectedError = {
+        code: 400,
+        message: "Datos erroneos!",
+      };
+
+      const req = {
+        body: {
+          id: "61954cb7c24554beef209bc0",
+        },
+      };
+
+      Tuitah.deleteOne = jest.fn().mockRejectedValue({});
+
+      const next = jest.fn();
+
+      await deleteTuitah(req, null, next);
+
+      expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        expectedError.message
+      );
     });
   });
 });
