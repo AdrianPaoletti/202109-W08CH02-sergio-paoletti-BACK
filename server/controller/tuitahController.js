@@ -47,7 +47,7 @@ const likeTuitah = async (req, res, next) => {
     tuit.likes += 1;
     debug(chalk.blue(tuit));
     await tuit.save();
-    const tuitLiked = await Tuitah.findById(id);
+    const tuitLiked = await Tuitah.findOne({ _id: id });
     res.json(tuitLiked);
   } catch (error) {
     error.code = 400;
