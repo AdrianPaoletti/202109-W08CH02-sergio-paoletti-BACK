@@ -76,9 +76,30 @@ const deleteTuitah = async (req, res, next) => {
   }
 };
 
+const getTuitById = async (req, res, next) => {
+  const { id } = req.params;
+  console.log(req.params)
+  try {
+    const tuitFind = await Tuitah.findById(id);
+    if (tuitFind) {
+      res.json(tuitFind);
+    }
+    else {
+      const error = new Error("Could not get tuit by id");
+      error.code = 404;
+      next(error);
+    }
+  } catch (error) {
+    error.code = 400;
+    error.message = "General pete getTuitById";
+    next(error);
+  }
+}
+
 module.exports = {
   addTuitah,
   getTuitah,
   likeTuitah,
   deleteTuitah,
+  getTuitById,
 };
