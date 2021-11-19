@@ -62,7 +62,7 @@ const deleteTuitah = async (req, res, next) => {
   debug(chalk.blue(`Nos llega en el body el tuitah con id -> ${id}`));
   try {
     debug(chalk.blue("borrando el tuit /tuitah/delete"));
-    const tuit = await Tuitah.deleteOne({ id });
+    const tuit = await Tuitah.deleteOne({ _id: id });
     debug(chalk.blue(`Se ha borrado el->`));
     debug(chalk.blue(JSON.stringify(tuit)));
     res.json({ tuit: "Borrado Correctamente!" });
@@ -78,13 +78,12 @@ const deleteTuitah = async (req, res, next) => {
 
 const getTuitById = async (req, res, next) => {
   const { id } = req.params;
-  console.log(req.params)
+  console.log(req.params);
   try {
     const tuitFind = await Tuitah.findById(id);
     if (tuitFind) {
       res.json(tuitFind);
-    }
-    else {
+    } else {
       const error = new Error("Could not get tuit by id");
       error.code = 404;
       next(error);
@@ -94,7 +93,7 @@ const getTuitById = async (req, res, next) => {
     error.message = "General pete getTuitById";
     next(error);
   }
-}
+};
 
 module.exports = {
   addTuitah,
